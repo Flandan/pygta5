@@ -10,10 +10,10 @@ from getkeys import key_check
 
 import random
 
-WIDTH = 160
-HEIGHT = 120
-LR = 1e-3
-EPOCHS = 10
+WIDTH = 80
+HEIGHT = 30
+LR = 1e-4
+EPOCHS = 100
 MODEL_NAME = 'pygta5-car-fast-{}-{}-{}-epochs-300K-data.model'.format(LR, 'alexnetv2',EPOCHS)
 
 t_time = 0.09
@@ -60,14 +60,11 @@ def main():
             # 800x600 windowed mode
             #screen =  np.array(ImageGrab.grab(bbox=(0,40,800,640)))
             screen = grab_screen(region=(0,40,800,640))
-            print('loop took {} seconds'.format(time.time()-last_time))
-            last_time = time.time()
             screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
             screen = cv2.resize(screen, (160,120))
 
-            prediction = model.predict([screen.reshape(160,120,1)])[0]
-            print(prediction)
-
+            prediction = model.predict([screen.reshape(30,80,1)/255.0])
+            """
             turn_thresh = .75
             fwd_thresh = 0.70
 
@@ -79,7 +76,9 @@ def main():
                 right()
             else:
                 straight()
-
+            """
+            print('loop took {} seconds.\t{}'.format(time.time()-last_time, pred_output), end='\r')
+            last_time = time.time()
         keys = key_check()
 
         # p pauses game and can get annoying.

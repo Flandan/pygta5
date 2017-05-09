@@ -70,6 +70,4 @@ def main():
                 print('Pausing!')
                 paused = True
                 time.sleep(1)
-
-
 main()
